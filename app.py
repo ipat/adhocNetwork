@@ -15,11 +15,21 @@ MYPORT = 9999
 import sys, time
 from socket import *
 
+
+file_name = sys.argv[1]
+addr = ('192.168.1.255', MYPORT)
+buf = 1024
+
 s = socket(AF_INET, SOCK_DGRAM)
 s.bind(('', 0))
 s.setsockopt(SOL_SOCKET, SO_BROADCAST, 1)
 
 while 1:
     data = "HELLO MAZDA" + '\n'
-    s.sendto(data, ('192.168.1.255', MYPORT))
-    time.sleep(0.01)
+    while(data):
+        f=open(file_name,"rb")
+        data = f.read(buf)
+        if(s.sendto(data,addr)):
+            print "sending ..."
+            data = f.read(buf)
+    time.sleep(1)
