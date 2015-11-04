@@ -4,7 +4,7 @@ import sys
 s = socket(AF_INET, SOCK_DGRAM)
 host = sys.argv[1]
 port = 9999
-buf = 1024
+buf = 100000
 addr = (host, port)
 
 file_name = sys.argv[2]
