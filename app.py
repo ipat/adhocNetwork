@@ -31,8 +31,8 @@ cv.NamedWindow("w1", cv.CV_WINDOW_AUTOSIZE)
 camera_index = 0
 capture = cv.CaptureFromCAM(camera_index)
 
-cv.SetCaptureProperty(capture, cv.CV_CAP_PROP_FRAME_HEIGHT, 240)
-cv.SetCaptureProperty(capture, cv.CV_CAP_PROP_FRAME_WIDTH, 320)
+cv.SetCaptureProperty(capture, cv.CV_CAP_PROP_FRAME_HEIGHT, 120)
+cv.SetCaptureProperty(capture, cv.CV_CAP_PROP_FRAME_WIDTH, 160)
 
 def repeat():
     global capture #declare as globals since we are assigning to them now
@@ -60,8 +60,8 @@ while 1:
             data = f.read(buf)
         i = i+1
         print data
-    s.sendto("END!!!",addr)
+    # s.sendto("END!!!",addr)
     print i
     print "sending ..."
 
-    time.sleep(0.1)
+    # time.sleep(0.1)
