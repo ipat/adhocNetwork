@@ -68,8 +68,6 @@ while 1:
         # print data
         if(s.sendto(data,addr)):
             data = f.read(buf)
-    # s.sendto("END!!!",addr)
-    # print (str(seq_num%10000)).zfill(4)
     seq_num += 1;
     print "sending ..."
 

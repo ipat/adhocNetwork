@@ -43,30 +43,35 @@ port = 9999
 s = socket(AF_INET, SOCK_DGRAM)
 s.bind((host,port))
 
+s.setsockopt(SOL_SOCKET,SO_BROADCAST,1)
+
 addr = (host,port)
 buf = 100000
+prev_seq_no = -1
 
 while True:
-    data,addr = s.recvfrom(buf)
-    print "Received File",data.strip()
     f = open("test.jpg",'wb')
     startWrite = False
     data,addr = s.recvfrom(buf)
     try:
-        while (data):
-            if startWrite:
-                if data == "END!!!":
-                    break
-                f.write(data)
+        seq_no = int(data[:4])
 
-            if data == "START!!!":
-                startWrite = True
-            data,addr = s.recvfrom(buf)
-        f.close()
-        img = cv2.imread('test.jpg')
-        if img is not None:
-            cv2.imshow('image',img)
-            k = cv2.waitKey(10)
+
+        if(seq_no > prev_seq_no or seq_no < prev_seq_no - 5000) :
+            print data[:5]
+            print "Sequence No = " + str(seq_no)
+            prev_seq_no = seq_no
+            data = data[5:]
+            current_seq = (str(seq_no)).zfill(4)
+            f.write(data)
+            f.close()
+            img = cv2.imread('test.jpg')
+            if img is not None:
+                cv2.imshow('image',img)
+                k = cv2.waitKey(10)
+            data = current_seq + "1" + data
+            s.sendto(data,('192.168.1.255',9999))
+
     except timeout:
         f.close()
         s.close()
