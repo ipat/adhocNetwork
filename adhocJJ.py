@@ -35,6 +35,8 @@ process = subprocess.call(bashCommand.split())
 from socket import *
 import sys
 import select
+import cv2
+import time
 
 host = "0.0.0.0"
 port = 9999
@@ -42,23 +44,34 @@ s = socket(AF_INET, SOCK_DGRAM)
 s.bind((host,port))
 
 addr = (host,port)
-buf = 9000000
+buf = 100000
 
-data,addr = s.recvfrom(buf)
-print "Received File",data.strip()
-f = open(data.strip(),'wb')
+while True:
+    data,addr = s.recvfrom(buf)
+    print "Received File",data.strip()
+    f = open("test.jpg",'wb')
+    startWrite = False
+    data,addr = s.recvfrom(buf)
+    try:
+        while (data):
+            if startWrite:
+                if data == "END!!!":
+                    break
+                f.write(data)
 
-data,addr = s.recvfrom(buf)
-try:
-    while (data):
-        f.write(data)
-        s.settimeout(2)
-        data,addr = s.recvfrom(buf)
-except timeout:
-    f.close()
-    s.close()
-    print "File Downloaded"
-#end of receiving
+            if data == "START!!!":
+                startWrite = True
+            data,addr = s.recvfrom(buf)
+        f.close()
+        img = cv2.imread('test.jpg')
+        if img is not None:
+            cv2.imshow('image',img)
+            k = cv2.waitKey(10)
+    except timeout:
+        f.close()
+        s.close()
+        print "File Downloaded"
+    #end of receiving
 
 # bashCommand = "pwd"
 # process = subprocess.Popen(bashCommand.split(), stdout=subprocess.PIPE)

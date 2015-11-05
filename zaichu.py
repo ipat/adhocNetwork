@@ -24,13 +24,13 @@ process = subprocess.call(bashCommand.split())
 bashCommand = "sudo iwconfig wlan0 channel 4"
 process = subprocess.call(bashCommand.split())
 
-from socket import *
-s=socket(AF_INET,SOCK_DGRAM)
+# from socket import *
+# s=socket(AF_INET,SOCK_DGRAM)
 # s.bind(('',0))
-
-s.setsockopt(SOL_SOCKET,SO_REUSEADDR,1)
-s.setsockopt(SOL_SOCKET,SO_BROADCAST,1)
-s.sendto('this is testing',('192.168.1.25',8123))
+#
+# s.setsockopt(SOL_SOCKET,SO_REUSEADDR,1)
+# s.setsockopt(SOL_SOCKET,SO_BROADCAST,1)
+# s.sendto('this is testing',('192.168.1.25',8123))
 #
 # import socket
 #
