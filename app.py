@@ -18,7 +18,7 @@ from socket import *
 
 # file_name = sys.argv[1]
 addr = ('192.168.1.255', MYPORT)
-buf = 100000
+buf = 80000
 
 s = socket(AF_INET, SOCK_DGRAM)
 s.bind(('', 0))
@@ -52,22 +52,25 @@ def repeat():
     #     if not capture: #if the next camera index didn't work, reset to 0.
     #         camera_index = 0
     #         capture = cv.CaptureFromCAM(camera_index)
+seq_num = 0;
 
 while 1:
     data = "HELLO MAZDA" + '\n'
     # s.sendto("END!!!",addr)
     i = 0
     repeat()
-    s.sendto("START!!!",addr)
+    # s.sendto("START!!!",addr)
     while data:
         f=open("test.jpg","rb")
-        data = f.read(buf)
-        print data
+        data = (str(seq_num%10000)).zfill(4)  + "0" + f.read(buf)
+        print data[:5]
+
+        # print data
         if(s.sendto(data,addr)):
             data = f.read(buf)
-        i = i+1
-    s.sendto("END!!!",addr)
-    print i
+    # s.sendto("END!!!",addr)
+    # print (str(seq_num%10000)).zfill(4)
+    seq_num += 1;
     print "sending ..."
 
-    # time.sleep(0.01)
+    time.sleep(0.05)
