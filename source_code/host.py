@@ -68,7 +68,7 @@ seq_num = 0;
 
 # Infinite loop for broadcasting images
 while 1:
-    data = ""
+    data = "INIT"
     i = 0
     # Call repeat() to capture the image
     repeat()
